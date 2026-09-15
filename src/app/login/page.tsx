@@ -1,8 +1,37 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (res?.error) {
+      setError("Invalid email or password");
+    } else {
+      // Refresh the router to update server components with the new session
+      router.refresh();
+      // Redirect based on role (for simplicity, just go to student portal for now)
+      // In a real app we would check the session role and redirect accordingly
+      router.push("/student/dashboard");
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
       <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100 via-slate-50 to-white"></div>
@@ -14,7 +43,13 @@ export default function LoginPage() {
             <p className="text-slate-500 mt-2">Sign in to your portal</p>
           </div>
           
-          <form className="space-y-6" action="/api/auth/callback/credentials" method="POST">
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-100">
+              {error}
+            </div>
+          )}
+          
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-slate-700">Email Address</label>
               <input 
@@ -23,6 +58,8 @@ export default function LoginPage() {
                 type="email" 
                 autoComplete="email" 
                 required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm shadow-sm placeholder-slate-400
                 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors" 
                 placeholder="you@university.edu"
@@ -37,6 +74,8 @@ export default function LoginPage() {
                 type="password" 
                 autoComplete="current-password" 
                 required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm shadow-sm placeholder-slate-400
                 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors" 
                 placeholder="••••••••"
