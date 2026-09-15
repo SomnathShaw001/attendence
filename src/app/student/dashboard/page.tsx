@@ -1,6 +1,17 @@
 import WhatIfSimulator from "@/components/WhatIfSimulator";
+import { getStudentDashboardData } from "@/app/actions";
+import { redirect } from "next/navigation";
 
-export default function StudentDashboard() {
+export default async function StudentDashboard() {
+  let data;
+  try {
+    data = await getStudentDashboardData();
+  } catch (error) {
+    redirect("/login");
+  }
+
+  const { student, totalClasses, attendedClasses, percentage } = data;
+
   return (
     <div className="min-h-screen bg-slate-50">
       <nav className="bg-white border-b border-slate-200">
@@ -11,8 +22,8 @@ export default function StudentDashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-slate-500">Student Portal</span>
-              <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-semibold">
-                JD
+              <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-semibold uppercase">
+                {student.user.name?.substring(0, 2) || "ST"}
               </div>
             </div>
           </div>
@@ -20,19 +31,21 @@ export default function StudentDashboard() {
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Welcome, {student.user.name}</h1>
         
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Attendance Overview Card */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <h2 className="text-lg font-medium text-slate-700">Overall Attendance</h2>
             <div className="mt-4 flex items-baseline text-4xl font-extrabold text-slate-900">
-              82<span className="text-xl font-medium text-slate-500 ml-1">%</span>
+              {percentage.toFixed(1)}<span className="text-xl font-medium text-slate-500 ml-1">%</span>
             </div>
             <div className="mt-2 w-full bg-slate-200 rounded-full h-2">
-              <div className="bg-green-500 h-2 rounded-full" style={{ width: '82%' }}></div>
+              <div className={`h-2 rounded-full ${percentage >= 75 ? 'bg-green-500' : 'bg-red-500'}`} style={{ width: `${percentage}%` }}></div>
             </div>
-            <p className="mt-4 text-sm text-slate-500">You are above the 75% minimum threshold.</p>
+            <p className="mt-4 text-sm text-slate-500">
+              {percentage >= 75 ? "You are above the 75% minimum threshold." : "Warning: You are below the 75% threshold."}
+            </p>
           </div>
 
           {/* Quick Actions / What-If Simulator Placeholder */}
