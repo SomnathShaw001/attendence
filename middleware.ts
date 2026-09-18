@@ -15,9 +15,13 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  const authSecret =
+    process.env.NEXTAUTH_SECRET ||
+    "smart-attendance-production-fallback-secret-2026-very-secure-key-32chars";
+
   const token = await getToken({
     req,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: authSecret,
   });
 
   const isAuthenticated = !!token;
