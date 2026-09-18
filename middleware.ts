@@ -39,13 +39,12 @@ export async function middleware(req: NextRequest) {
     });
   }
 
-  const isAuthenticated = !!token;
   const isAuthPage = pathname === "/login";
   const isUnauthorizedPage = pathname === "/unauthorized";
 
   // Redirect authenticated user away from login page to dashboard
   if (isAuthPage) {
-    if (isAuthenticated) {
+    if (token) {
       return NextResponse.redirect(new URL("/dashboard", req.url));
     }
     return NextResponse.next();
@@ -57,7 +56,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // Protect root and dashboard routes from unauthenticated users
-  if (!isAuthenticated) {
+  if (!token) {
     const loginUrl = new URL("/login", req.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
