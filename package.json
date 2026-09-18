@@ -1,0 +1,41 @@
+{
+  "name": "smart-attendance",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "tsx tests/auth.test.ts && tsx tests/dashboard.test.ts && tsx tests/students.test.ts && tsx tests/teachers.test.ts && tsx tests/classes.test.ts && tsx tests/attendance.test.ts && tsx tests/take-attendance.test.ts && tsx tests/attendance-history.test.ts && tsx tests/attendance-analytics.test.ts && tsx tests/reports.test.ts && tsx tests/qr-attendance.test.ts && tsx tests/security.test.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^3.0.3",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.16.0",
+    "next": "16.3.5",
+    "next-auth": "^4.24.15",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "tailwind-merge": "^3.5.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "16.3.5",
+    "postcss": "^8.5.0",
+    "prisma": "^5.22.0",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.23.13",
+    "typescript": "^5.7.0"
+  }
+}
