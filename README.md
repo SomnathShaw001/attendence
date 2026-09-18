@@ -114,16 +114,24 @@ The database schema is defined in [`prisma/schema.prisma`](file:///c:/Users/shaw
 erDiagram
     User ||--o| TeacherProfile : "has"
     User ||--o| StudentProfile : "has"
-    TeacherProfile ||--o{ Class : "teaches"
-    Subject ||--o{ Class : "taught_in"
-    Term ||--o{ Class : "scheduled_in"
-    Class ||--o{ ClassEnrollment : "enrolls"
+    TeacherProfile ||--o{ ClassSection : "teaches"
+    Subject ||--o{ ClassSection : "taught_in"
+    Term ||--o{ ClassSection : "scheduled_in"
+    ClassSection ||--o{ ClassEnrollment : "enrolls"
     StudentProfile ||--o{ ClassEnrollment : "enrolled_in"
-    Class ||--o{ ClassSession : "holds"
+    ClassSection ||--o{ ClassSession : "holds"
     ClassSession ||--o{ AttendanceRecord : "records"
     StudentProfile ||--o{ AttendanceRecord : "receives"
     AttendanceRecord ||--o{ AttendanceAuditLog : "tracks"
     ClassSession ||--o{ AttendanceNonce : "validates"
+
+    ClassSection {
+        string id PK
+        string subjectId FK
+        string termId FK
+        string name
+        string section
+    }
 
     ClassSession {
         string id PK
