@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint",
     "test": "tsx tests/auth.test.ts && tsx tests/dashboard.test.ts && tsx tests/students.test.ts && tsx tests/teachers.test.ts && tsx tests/classes.test.ts && tsx tests/attendance.test.ts && tsx tests/take-attendance.test.ts && tsx tests/attendance-history.test.ts && tsx tests/attendance-analytics.test.ts && tsx tests/reports.test.ts && tsx tests/qr-attendance.test.ts && tsx tests/security.test.ts"
