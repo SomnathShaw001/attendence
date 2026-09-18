@@ -5,6 +5,15 @@ import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { UserRole } from "@/types";
 
+// Ensure NEXTAUTH_URL is valid and non-empty in runtime
+if (
+  !process.env.NEXTAUTH_URL ||
+  process.env.NEXTAUTH_URL.trim() === "" ||
+  !process.env.NEXTAUTH_URL.startsWith("http")
+) {
+  process.env.NEXTAUTH_URL = "https://attendence-puce.vercel.app";
+}
+
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
