@@ -1,6 +1,6 @@
 # Smart Attendance Management System
 
-> 🌐 **Live Vercel Deployment:** [https://attendence-2iro4h1gr-somnath-shaws-projects-983800b0.vercel.app](https://attendence-2iro4h1gr-somnath-shaws-projects-983800b0.vercel.app)  
+> 🌐 **Live Production App:** [https://attendence-puce.vercel.app](https://attendence-puce.vercel.app)  
 > 📦 **GitHub Repository:** [https://github.com/SomnathShaw001/attendence](https://github.com/SomnathShaw001/attendence)
 
 A state-of-the-art, role-based educational attendance platform built with **Next.js 16 (App Router)**, **React 19**, **Prisma ORM**, **Tailwind CSS**, and **NextAuth.js**. Designed for universities and colleges to eliminate attendance fraud through dynamic time-rotating QR roll calls, automated debarment risk detection, detailed audit trails, and multi-dimensional institutional reporting.
