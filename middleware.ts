@@ -19,10 +19,25 @@ export async function middleware(req: NextRequest) {
     process.env.NEXTAUTH_SECRET ||
     "smart-attendance-production-fallback-secret-2026-very-secure-key-32chars";
 
-  const token = await getToken({
+  const isSecure = req.cookies.has("__Secure-next-auth.session-token");
+
+  let token = await getToken({
     req,
     secret: authSecret,
+    cookieName: isSecure
+      ? "__Secure-next-auth.session-token"
+      : "next-auth.session-token",
+    secureCookie: isSecure,
   });
+
+  if (!token && !isSecure) {
+    token = await getToken({
+      req,
+      secret: authSecret,
+      cookieName: "__Secure-next-auth.session-token",
+      secureCookie: true,
+    });
+  }
 
   const isAuthenticated = !!token;
   const isAuthPage = pathname === "/login";
